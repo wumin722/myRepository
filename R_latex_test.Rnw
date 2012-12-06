@@ -49,7 +49,7 @@ first.vect[length(first.vect)+1:(9-length(first.vect)%%9)] <- rep(NA, 9-length(f
 first.matrix <- matrix(first.vect,ceiling(length(first.vect)/9) , 9)
 
 @
-\Sexpr{print(xtable(first.matrix, caption="系统聚类——第一类"),
+\Sexpr{print(xtable(first.matrix, caption="$SO_2$系统聚类——第一类"),
              include.colnames=FALSE, include.rownames=FALSE)}
           
 <<>>=

@@ -1,0 +1,206 @@
+\documentclass[12pt,oneside]{report}\usepackage{graphicx, color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\definecolor{fgcolor}{rgb}{0.2, 0.2, 0.2}
+\newcommand{\hlnumber}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlfunctioncall}[1]{\textcolor[rgb]{0.501960784313725,0,0.329411764705882}{\textbf{#1}}}%
+\newcommand{\hlstring}[1]{\textcolor[rgb]{0.6,0.6,1}{#1}}%
+\newcommand{\hlkeyword}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlargument}[1]{\textcolor[rgb]{0.690196078431373,0.250980392156863,0.0196078431372549}{#1}}%
+\newcommand{\hlcomment}[1]{\textcolor[rgb]{0.180392156862745,0.6,0.341176470588235}{#1}}%
+\newcommand{\hlroxygencomment}[1]{\textcolor[rgb]{0.43921568627451,0.47843137254902,0.701960784313725}{#1}}%
+\newcommand{\hlformalargs}[1]{\textcolor[rgb]{0.690196078431373,0.250980392156863,0.0196078431372549}{#1}}%
+\newcommand{\hleqformalargs}[1]{\textcolor[rgb]{0.690196078431373,0.250980392156863,0.0196078431372549}{#1}}%
+\newcommand{\hlassignement}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlpackage}[1]{\textcolor[rgb]{0.588235294117647,0.709803921568627,0.145098039215686}{#1}}%
+\newcommand{\hlslot}[1]{\textit{#1}}%
+\newcommand{\hlsymbol}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlprompt}[1]{\textcolor[rgb]{0.2,0.2,0.2}{#1}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,%%textwidth=129mm,textheight=185mm, %%193-8
+text={160mm,260mm},centering]{geometry}
+\usepackage[BoldFont,SlantFont,CJKsetspaces,CJKchecksingle,CJKnumber,CJKaddspaces]{xeCJK}
+\usepackage{graphicx, color}
+\usepackage{setspace}
+\setCJKmainfont[BoldFont=SimHei]{SimSun}% 设置缺省中文字体
+\setCJKmonofont{SimSun}
+\usepackage{amsmath}%数学符号与公式
+\usepackage[pdftex,dvipdfm]{hyperref}
+\usepackage{amsfonts}%数学符号与字体
+\usepackage{hyperref} %超链接
+\renewcommand{\contentsname}{目录}
+\renewcommand{\abstractname}{摘要}
+\pagestyle{plain}
+\begin{document}
+
+
+
+\title{\textbf{对2012上半年环境保护重点城市环境空气质量状况数据的分析}}
+\author{吴敏}
+\maketitle
+\section*{图形}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlfunctioncall{load}(\hlstring{"/media/lenovo/R/Rworkspace/Rstudio_space/multivariate/graph.RData"})
+envir.index <- graph[, \hlfunctioncall{c}(1, 2, 4, 6, 10)]
+\hlfunctioncall{plot}(graph$SO2, graph$LAT, main = \hlstring{"$SO_2$怕放"})
+\end{alltt}
+\end{kframe}
+
+{\centering \includegraphics[width=\maxwidth]{figure/unnamed-chunk-1} 
+
+}
+
+
+\end{knitrout}
+
+$SO_2$
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlfunctioncall{library}(cluster)
+\hlfunctioncall{library}(xtable)
+df <- graph[, \hlfunctioncall{c}(2, 4, 6)]
+\hlfunctioncall{row.names}(df) <- graph[, 1]
+agn1 <- \hlfunctioncall{agnes}(df, stand = TRUE)
+glabel <- \hlfunctioncall{cutree}(agn1, k = 4)
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+first.vect <- envir.index[\hlfunctioncall{which}(glabel == 1), 1]
+first.vect[\hlfunctioncall{length}(first.vect) + 1:(9 - \hlfunctioncall{length}(first.vect)%%9)] <- \hlfunctioncall{rep}(NA, 9 - 
+    \hlfunctioncall{length}(first.vect)%%9)
+first.matrix <- \hlfunctioncall{matrix}(first.vect, \hlfunctioncall{ceiling}(\hlfunctioncall{length}(first.vect)/9), 9)
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+% latex table generated in R 2.15.1 by xtable 1.7-0 package
+% Thu Dec  6 22:59:24 2012
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{lllllllll}
+  \hline
+  \hline
+北 京 & 长 治 & 锦 州 & 苏 州 & 合 肥 & 日 照 & 长 沙 & 德 阳 & 宝 鸡 \\ 
+  天 津 & 临 汾 & 长 春 & 南 通 & 马鞍山 & 郑 州 & 株 洲 & 绵 阳 & 咸 阳 \\ 
+  石家庄 & 呼和浩特 & 吉 林 & 连云港 & 南 昌 & 开 封 & 湘 潭 & 宜 宾 & 渭 南 \\ 
+  唐 山 & 包 头 & 哈尔滨 & 扬 州 & 济 南 & 洛 阳 & 岳 阳 & 贵 阳 & 延 安 \\ 
+  秦皇岛 & 赤 峰 & 齐齐哈尔 & 镇 江 & 青 岛 & 平顶山 & 常 德 & 遵 义 & 西 宁 \\ 
+  邯 郸 & 沈 阳 & 上 海 & 杭 州 & 淄 博 & 安 阳 & 广 州 & 昆 明 & 银 川 \\ 
+  保 定 & 大 连 & 南 京 & 宁 波 & 枣 庄 & 焦 作 & 柳 州 & 曲 靖 & 石嘴山 \\ 
+  太 原 & 鞍 山 & 无 锡 & 温 州 & 烟 台 & 三门峡 & 重 庆 & 玉 溪 &  \\ 
+  大 同 & 抚 顺 & 徐 州 & 湖 州 & 潍 坊 & 武 汉 & 成 都 & 西 安 &  \\ 
+  阳 泉 & 本 溪 & 常 州 & 绍 兴 & 泰 安 & 宜 昌 & 泸 州 & 铜 川 &  \\ 
+   \hline
+\end{tabular}
+\caption{系统聚类——第一类}
+\end{center}
+\end{table}
+
+          
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+first.vect <- envir.index[\hlfunctioncall{which}(glabel == 2), 1]
+first.vect[\hlfunctioncall{length}(first.vect) + 1:(9 - \hlfunctioncall{length}(first.vect)%%9)] <- \hlfunctioncall{rep}(NA, 9 - 
+    \hlfunctioncall{length}(first.vect)%%9)
+first.matrix <- \hlfunctioncall{matrix}(first.vect, \hlfunctioncall{ceiling}(\hlfunctioncall{length}(first.vect)/9), 9)
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+% latex table generated in R 2.15.1 by xtable 1.7-0 package
+% Thu Dec  6 22:59:24 2012
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{lllllllll}
+  \hline
+  \hline
+牡丹江 & 福 州 & 泉 州 & 韶 关 & 珠 海 & 南 宁 & 北 海 & 拉 萨 &  \\ 
+  芜 湖 & 厦 门 & 九 江 & 深 圳 & 汕 头 & 桂 林 & 海 口 & 克拉玛依 &  \\ 
+   \hline
+\end{tabular}
+\caption{系统聚类——第二类}
+\end{center}
+\end{table}
+
+
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+first <- \hlfunctioncall{cbind}(envir.index[\hlfunctioncall{which}(glabel == 3 | glabel == 4), ], \hlfunctioncall{c}(\hlfunctioncall{rep}(\hlstring{"第三类"}, 
+    2), \hlstring{"第四类"}))
+\hlfunctioncall{names}(first)[6] <- \hlfunctioncall{c}(\hlstring{"系统聚类类别"})
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+% latex table generated in R 2.15.1 by xtable 1.7-0 package
+% Thu Dec  6 22:59:24 2012
+\begin{table}[ht]
+\begin{center}
+\begin{tabular}{lrrrll}
+  \hline
+City & SO2 & NO2 & PM10 & G & 系统聚类类别 \\ 
+  \hline
+济 宁 & 0.08 & 0.04 & 0.11 & 三级 & 第三类 \\ 
+  兰 州 & 0.04 & 0.04 & 0.14 & 三级 & 第三类 \\ 
+  乌鲁木齐 & 0.09 & 0.07 & 0.17 & 劣三级 & 第四类 \\ 
+   \hline
+\end{tabular}
+\caption{系统聚类——第三类和第四类}
+\end{center}
+\end{table}
+
+          
+
+\end{document}
+
+
+
