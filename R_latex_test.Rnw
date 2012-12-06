@@ -1,0 +1,76 @@
+\documentclass[12pt,oneside]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,%%textwidth=129mm,textheight=185mm, %%193-8
+text={160mm,260mm},centering]{geometry}
+\usepackage[BoldFont,SlantFont,CJKsetspaces,CJKchecksingle,CJKnumber,CJKaddspaces]{xeCJK}
+\usepackage{graphicx, color}
+\usepackage{setspace}
+\setCJKmainfont[BoldFont=SimHei]{SimSun}% 设置缺省中文字体
+\setCJKmonofont{SimSun}
+\usepackage{amsmath}%数学符号与公式
+\usepackage[pdftex,dvipdfm]{hyperref}
+\usepackage{amsfonts}%数学符号与字体
+\usepackage{hyperref} %超链接
+\renewcommand{\contentsname}{目录}
+\renewcommand{\abstractname}{摘要}
+\pagestyle{plain}
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+<<setup, include=FALSE>>=
+opts_chunk$set(message=FALSE, tidy=TRUE, fig.align="center", fig.width=6, fig.height=4,  digits=3, highlight=TRUE, warning=FALSE)
+options(scipen=4)
+par(mar=c(2,2,2,1))
+pdf.options(family="GB1")
+@
+\title{\textbf{对2012上半年环境保护重点城市环境空气质量状况数据的分析}}
+\author{吴敏}
+\maketitle
+\section*{图形}
+<<>>=
+load("/media/lenovo/R/Rworkspace/Rstudio_space/multivariate/graph.RData")
+envir.index <- graph[, c(1,2,4,6,10)]
+plot(graph$SO2, graph$LAT, main="$SO_2$怕放")
+@
+\Sexpr{print("$SO_2$")}
+
+<<>>=
+library(cluster)
+library(xtable)
+df <- graph[ , c(2,4,6)]
+row.names(df) <- graph[, 1]
+agn1 <- agnes(df,  stand = TRUE)
+glabel <- cutree(agn1, k=4)
+@
+
+
+<<>>=
+first.vect <- envir.index[which(glabel == 1), 1]
+first.vect[length(first.vect)+1:(9-length(first.vect)%%9)] <- rep(NA, 9-length(first.vect)%%9)
+first.matrix <- matrix(first.vect,ceiling(length(first.vect)/9) , 9)
+
+@
+\Sexpr{print(xtable(first.matrix, caption="系统聚类——第一类"),
+             include.colnames=FALSE, include.rownames=FALSE)}
+          
+<<>>=
+first.vect <- envir.index[which(glabel == 2), 1]
+first.vect[length(first.vect)+1:(9-length(first.vect)%%9)] <- rep(NA, 9-length(first.vect)%%9)
+first.matrix <- matrix(first.vect,ceiling(length(first.vect)/9) , 9)
+
+@
+\Sexpr{print(xtable(first.matrix, caption="系统聚类——第二类"),
+             include.colnames=FALSE, include.rownames=FALSE)}
+
+
+<<>>=
+first <- cbind(envir.index[which(glabel == 3 | glabel == 4), ],
+             c(rep("第三类", 2), "第四类"))
+names(first)[6] <- c("系统聚类类别")
+@
+\Sexpr{print(xtable(first, caption="系统聚类——第三类和第四类"), include.rownames=FALSE)}
+          
+
+\end{document}
+
+
+
