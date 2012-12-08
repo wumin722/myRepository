@@ -8,9 +8,9 @@ text={160mm,260mm},centering]{geometry}
 \setCJKmainfont[BoldFont=SimHei]{SimSun}% 设置缺省中文字体
 \setCJKmonofont{SimSun}
 \usepackage{amsmath}%数学符号与公式
-\usepackage[pdftex,dvipdfm]{hyperref}
+\usepackage[pdftex,dvipdfm,colorlinks=true]{hyperref}%超链接
 \usepackage{amsfonts}%数学符号与字体
-\usepackage{hyperref} %超链接
+
 \renewcommand{\contentsname}{目录}
 \renewcommand{\abstractname}{摘要}
 \pagestyle{plain}
