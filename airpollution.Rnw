@@ -8,16 +8,15 @@ text={160mm,260mm},centering]{geometry}
 \setCJKmainfont[BoldFont=SimHei]{SimSun}% 设置缺省中文字体
 \setCJKmonofont{SimSun}
 \usepackage{amsmath}%数学符号与公式
-\usepackage[pdftex,dvipdfm]{hyperref}
+\usepackage[pdftex,dvipdfm,colorlinks=true, linkcolor=red]{hyperref}%超链接
 \usepackage{amsfonts}%数学符号与字体
-\usepackage{hyperref} %超链接
 \renewcommand{\contentsname}{目录}
 \renewcommand{\abstractname}{摘要}
 \pagestyle{plain}
 \begin{document}
 \SweaveOpts{concordance=TRUE}
-<<setup, include=FALSE>>=
-opts_chunk$set(message=FALSE, tidy=TRUE, fig.align="center", fig.width=6, fig.height=4,  digits=3, highlight=TRUE, warning=FALSE, echo=FALSE)
+<<setup, include=FALSE, tidy=TRUE>>=
+opts_chunk$set(message=FALSE, tidy=TRUE, fig.align="center", fig.width=6, fig.height=4,  digits=3, highlight=TRUE, warning=FALSE, echo=T)
 options(scipen=4)
 par(mar=c(2,2,2,1))
 pdf.options(family="GB1")
@@ -25,8 +24,8 @@ pdf.options(family="GB1")
 \title{\textbf{对2012上半年环境保护重点城市环境空气质量状况数据的分析}}
 \author{吴敏}
 \maketitle
-
 \tableofcontents
+\newpage
 \section*{\color{blue}一，对数据的简单描述}
 \addcontentsline{toc}{section}{一，对数据的简单描述}
 
@@ -36,7 +35,7 @@ load("/media/lenovo/R/Rworkspace/Rstudio_space/multivariate/graph.RData")
 envir.index <- graph[, c(1,2,4,6,10)]
 #ddply(graph[, 1], .(G), subset, PM10 <= 0.04)
 @
-本文使用的环境指标数据来自环境保护部发布的\href{http://www.mep.gov.cn/gkml/hbb/bgg/201208/t20120823_235126.htm}{\color{blue}《2012上半年环境保护重点城市环境空气质量状况》}。虽然新的环境标准已经公布，但此文件所使用的标准仍然是GB3095-1996。公布的指标中没有包括$PM_{2.5}$。且$PM_{10}$的二级标准为$0.1mg/m^{3}$。
+本文使用的环境指标数据来自环境保护部发布的\href{http://www.mep.gov.cn/gkml/hbb/bgg/201208/t20120823_235126.htm}{《2012上半年环境保护重点城市环境空气质量状况》}。虽然新的环境标准已经公布，但此文件所使用的标准仍然是GB3095-1996。公布的指标中没有包括$PM_{2.5}$。且$PM_{10}$的二级标准为$0.1mg/m^{3}$。
 $PM_{10}$达到一级标准的只有\Sexpr{graph[with(graph,  which(PM10 < 0.04)), 1]}
 
 
@@ -121,13 +120,14 @@ picture + geom_point(aes(x = LONG, y = LAT, colour = G), size = I(0.4), data = a
 figure-4为$PM_{10}$与纬度之间的关系。从这个局部多项式回归(loess)曲线图也可以看出$PM_{10}$超出$0.1mg/m^{3}$的地方主要集中在北纬30度到40度之间。超出40度则主要为东北地区的城市。
 \begin{figure}
 <<fig-4>>=
-ggplot(aes(x=LAT, y=PM10), data=graph,) + geom_point() + geom_smooth()
+ggplot(aes(x=LAT, y=PM10), data=graph) + geom_point() + geom_smooth()
 @
 \caption{$PM_{10}$与维度之间的loess回归}
 \end{figure}
 \section*{\color{blue}三，对空气质量指标的系统聚类}
 \addcontentsline{toc}{section}{三，对空气质量指标的系统聚类}
 国家的空气质量等级标准是硬性的。$SO_{2}$、$NO_{2}$、$PM_{10}$三项指标都必须达到某一类的标准才能归为某一类。当我们使用最小距离进行系统聚类时，是将各项指标相近的样本聚在一起。聚类结果为figure-4。
+\newpage
 \begin{figure}
 <<figure-5, fig.height=10>>=
 #加载聚类包

@@ -32,7 +32,7 @@ envir.index <- graph[, c(1,2,4,6,10)]
 plot(graph$SO2, graph$LAT, main="$SO_2$怕放")
 @
 \Sexpr{print("$SO_2$")}
-
+本文使用的环境指标数据来自环境保护部发布的\href{http://www.mep.gov.cn/gkml/hbb/bgg/201208/t20120823_235126.htm}{\color{blue}《2012上半年环境保护重点城市环境空气质量状况》}。
 <<>>=
 library(cluster)
 library(xtable)
