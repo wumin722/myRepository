@@ -16,7 +16,8 @@ text={160mm,260mm},centering]{geometry}
 \begin{document}
 \SweaveOpts{concordance=TRUE}
 <<setup, include=FALSE, tidy=TRUE>>=
-opts_chunk$set(message=FALSE, tidy=TRUE, fig.align="center", fig.width=6, fig.height=4,  digits=3, highlight=TRUE, warning=FALSE, echo=T)
+opts_chunk$set(message=FALSE, tidy=TRUE, fig.align="center", fig.width=6, fig.height=4,  digits=3,
+highlight=TRUE, warning=FALSE, echo=TRUE, cache=TRUE)
 options(scipen=4)
 par(mar=c(2,2,2,1))
 pdf.options(family="GB1")
@@ -28,6 +29,7 @@ pdf.options(family="GB1")
 \newpage
 \section*{\color{blue}一，对数据的简单描述}
 \addcontentsline{toc}{section}{一，对数据的简单描述}
+
 
 <<1.1>>=
 library(plyr)
@@ -127,9 +129,8 @@ ggplot(aes(x=LAT, y=PM10), data=graph) + geom_point() + geom_smooth()
 \section*{\color{blue}三，对空气质量指标的系统聚类}
 \addcontentsline{toc}{section}{三，对空气质量指标的系统聚类}
 国家的空气质量等级标准是硬性的。$SO_{2}$、$NO_{2}$、$PM_{10}$三项指标都必须达到某一类的标准才能归为某一类。当我们使用最小距离进行系统聚类时，是将各项指标相近的样本聚在一起。聚类结果为figure-4。
-\newpage
 \begin{figure}
-<<figure-5, fig.height=10>>=
+<<figure-5, fig.height=10, echo=FALSE>>=
 #加载聚类包
 library(cluster)
 df <- graph[ , c(2,4,6)]
@@ -151,36 +152,14 @@ par(op)
 glabel <- cutree(agn1, k=4)
 @
 
-
-<<>>=
-first.vect <- envir.index[which(glabel == 1), 1]
-first.vect[length(first.vect)+1:(9-length(first.vect)%%9)] <- rep(NA, 9-length(first.vect)%%9)
-first.matrix <- matrix(first.vect,ceiling(length(first.vect)/9) , 9)
-
+<<results='hide'>>=
+#编译表格部分
+R_latex_test.tex <- knit("R_latex_test.Rnw")
 @
-\Sexpr{print(xtable(first.matrix, caption="系统聚类——第一类"),
-             include.colnames=FALSE, include.rownames=FALSE)}
+\input{R_latex_test.tex}
 
 
-<<>>=
-first.vect <- envir.index[which(glabel == 2), 1]
-first.vect[length(first.vect)+1:(9-length(first.vect)%%9)] <- rep(NA, 9-length(first.vect)%%9)
-first.matrix <- matrix(first.vect,ceiling(length(first.vect)/9) , 9)
-
-@
-\Sexpr{print(xtable(first.matrix, caption="系统聚类——第二类"),
-             include.colnames=FALSE, include.rownames=FALSE)}
-
-
-<<>>=
-first <- cbind(envir.index[which(glabel == 3 | glabel == 4), ],
-             c(rep("第三类", 2), "第四类"))
-names(first)[6] <- c("系统聚类类别")
-@
-\Sexpr{print(xtable(first, caption="系统聚类——第三类和第四类"), include.rownames=FALSE)}
- 
 
 这与国家环境保护部的分类很不一样。系统聚类后主要将空气好的城市和差的城市挑出了。第二类中的城市以沿海城市为主，空气质量都是比较好的。而第三类和第四类都为空气质量差的城市。
-
 \end{document}
 \abstract{本问通过对不同城市的空气质量主要指标进行聚类比较，通过分析同一类城市背后的主要相似点判断影响空气质量的主要原因}
